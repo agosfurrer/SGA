@@ -98,25 +98,25 @@
 
 
 //simular consulta clima
-function obtenerClima() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve("22°c - Soleado")
-        }, 2000)
-    })
-}
+// function obtenerClima() {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             resolve("22°c - Soleado")
+//         }, 2000)
+//     })
+// }
 
-//con then()
-obtenerClima().then((clima) => {
-    console.log(clima)
-});
+// //con then()
+// obtenerClima().then((clima) => {
+//     console.log(clima)
+// });
 
-//async(await)
-async function mostrarclima() {
-    const clima = await obtenerClima()
-    console.log(clima)
-}
-mostrarclima()
+// //async(await)
+// async function mostrarclima() {
+//     const clima = await obtenerClima()
+//     console.log(clima)
+// }
+// mostrarclima()
 
 //saldo
 // function consultarSaldo() {
@@ -134,33 +134,40 @@ mostrarclima()
 // mostrarSaldo()
 
 //funcion login
-function iniciarSesion() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve("Bienvenida Ago")
-        }, 2500)
-    })
-}
-async function mostrarInicio() {
-    const mensaje = await iniciarSesion()
-    console.log(mensaje)
-}
-mostrarInicio()
+// function iniciarSesion() {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             resolve("Bienvenida Ago")
+//         }, 2500)
+//     })
+// }
+// async function mostrarInicio() {
+//     const mensaje = await iniciarSesion()
+//     console.log(mensaje)
+// }
+// mostrarInicio()
 
-function obtenerUsuario() {
-    return new Promise ((resolve) => {
-        setTimeout(() => {
-            resolve({
-                id: 1,
-                nombre: Ago,
-                edad:20
-            })
-        }, 3000);
-    })
+// function obtenerUsuario() {
+//     return new Promise ((resolve) => {
+//         setTimeout(() => {
+//             resolve({
+//                 id: 1,
+//                 nombre: Ago,
+//                 edad:20
+//             })
+//         }, 3000);
+//     })
+// }
+// async function mostrarUsuario() {
+//     console.log("Consultando usuario...")
+//     const usuario = await obtenerUsuario()
+//     console.log(usuario)
+// }
+// mostrarUsuario()
+
+
+async function prueba () {
+    const respuesta = await fetch("https://jsonplaceholder.typicode.com/users")
+    console.log(respuesta);
 }
-async function mostrarUsuario() {
-    console.log("Consultando usuario...")
-    const usuario = await obtenerUsuario()
-    console.log(usuario)
-}
-mostrarUsuario()
+prueba()
