@@ -78,46 +78,59 @@
 // mostrarD()
 
 //con server
-// async function obtenerAlumno() {
-//     const respuesta = await fetch("https://jsonplaceholder.typicode.com/users/1")//puedo indicar cuantos id muestra
-//     const alumnos = await respuesta.json() 
-//     return alumnos
-// }
-// function mostrarAlumnos(alumnos) {
-//     console.table(alumnos)
-    // console.log(alumnos[0].name)
+async function obtenerAlumno() {
+   const respuesta = await fetch("https://jsonplaceholder.typicode.com/users")//puedo indicar cuantos id muestra
+    const alumnos = await respuesta.json() 
+    return alumnos
+}
+function mostrarAlumnos(alumnos) {
+    //console.table(alumnos)
+
+console.log(typeof alumnos)
+localStorage.setItem("alumnos", JSON.stringify(alumnos))
+const datos = localStorage.getItem("alumnos")
+console.log(typeof datos)
+console.log(datos)
+const alumRecu = JSON.parse(datos)
+console.log(typeof alumRecu)
+console.table(alumRecu)
+
+     // console.log(alumnos[0].name)
     // for (const alumno of alumnos) {
     //     console.log(alumno.id, alumno.name, alumno.email)
     // }
-// }
-// async function iniciar() {
-//     const alumnos = await obtenerAlumno()
-//     mostrarAlumnos(alumnos)
-// }
-// iniciar()
+}
+async function iniciar() {
+    const alumnos = await obtenerAlumno()
+    mostrarAlumnos(alumnos)
+}
+iniciar()
+
+
+
+
 
 // /post
 // /comments
 // id-titulo-usuario
 
-async function obtenerComments() {
-    const respuesta = await fetch("https://jsonplaceholder.typicode.com/comments")//puedo indicar cuantos id muestra
-    const comments = await respuesta.json() 
-    return comments
-}
-function mostrarComments(comments) {
-    //console.table(post)
-    //console.log(alumnos[0].name)
-    for (const co of comments) {
-        console.log(co.id, co.name, co.email)
-    }
-}
-async function iniciarComments() {
-    const comments = await obtenerComments()
-    mostrarComments(comments)
-}
-iniciarComments()
-
+// async function obtenerComments() {
+//     const respuesta = await fetch("https://jsonplaceholder.typicode.com/comments")//puedo indicar cuantos id muestra
+//     const comments = await respuesta.json() 
+//     return comments
+// }
+// function mostrarComments(comments) {
+//     //console.table(post)
+//     //console.log(alumnos[0].name)
+//     for (const co of comments) {
+//         console.log(co.id, co.name, co.email)
+//     }
+// }
+// async function iniciarComments() {
+//     const comments = await obtenerComments()
+//     mostrarComments(comments)
+// }
+// iniciarComments()
 
 // ---------------------------- post
 // async function obtenerPost() {
@@ -137,3 +150,4 @@ iniciarComments()
 //     mostrarPost(post)
 // }
 // iniciarPost()
+
