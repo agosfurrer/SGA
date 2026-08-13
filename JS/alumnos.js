@@ -158,40 +158,61 @@
 const formulario = document.querySelector("#formAlumno")
 const mensaje = document.querySelector("#mensaje")
 let alumnosEditandoId = null;
+const listaAlumnos = document.querySelector("#listaAlumnos")
 
 formulario.addEventListener("submit", function(event){
     event.preventDefault();//evita q se recargue
 
-const nombre = document.querySelector("#nombre").value
-const carrera = document.querySelector("#carrera").value
-const correo = document.querySelector("#correo").value
-const listaAlumnos = document.querySelector("#listaAlumnos")
+const nombre = document.querySelector("#nombre").value.trim()
+const carrera = document.querySelector("#carrera").value.trim()
+const correo = document.querySelector("#correo").value.trim()
 
+if (nombre === "" || carrera === "" || correo === "") {
+    mostrarMensaje("Todos los campos son obligatorios", "mje-error")
+    return 
+}
 
-const alumno = {
+if (!correo.includes("@")) {
+    mostrarMensaje("Ingrese un correo electrónico válido", "mje-error")
+    return
+}
+
+if (nombre.length < 3) {
+    mostrarMensaje("El nombre debe tener al menos 3 caracteres", "mje-error")
+    return
+}
+
+const alumnos = obtenerAlumno()
+// console.log(nombre, carrera, correo)
+
+if (alumnosEditandoId === null) {
+    const alumno = {
     id: Date.now(),
     nombre: nombre,
     carrera: carrera,
     correo: correo
 }
 
-const alumnos = obtenerAlumno()
 alumnos.push(alumno)
+mostrarMensaje("Alumno guardado correctamente", "mje-exito")
+
+} 
+else {
+    const alumno = alumnos.find(alumno => alumno.id === alumnosEditandoId)
+    alumno.nombre = nombre
+    alumno.carrera = carrera
+    alumno.correo = correo
+    alumnosEditandoId = null
+    formulario.querySelector("button").textContent = "Guardar alumno"
+
+    mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
+}
+
 localStorage.setItem("alumnos", JSON.stringify(alumnos))
-
-mostrarMensaje("Alumno guardado correctamente")
-
 mostrarAlumnos(alumnos)
 formulario.reset()
 
 });
-
-function mostrarMensaje(texto) {
-    mensaje.textContent = texto;
-    setTimeout(() => {
-        mensaje.textContent = " ";
-    }, 3000);
-}
 
 function obtenerAlumno () {
     const datos = localStorage.getItem("alumnos")
@@ -201,6 +222,16 @@ function obtenerAlumno () {
     return [] //evita q devuelva nulo
 }
 
+function mostrarMensaje(texto, tipo) {
+    mensaje.textContent = texto;
+    mensaje.className = tipo
+    setTimeout(() => {
+        mensaje.textContent = " ";
+        mensaje.className = "oculto"
+    }, 3000);
+}
+
+
 function mostrarAlumnos(alumnos) {
     listaAlumnos.innerHTML = ""
     for (const alumno of alumnos) {
@@ -209,7 +240,7 @@ function mostrarAlumnos(alumnos) {
             <td> ${alumno.id}</td>
             <td> ${alumno.nombre}</td>
             <td> ${alumno.carrera}</td>
-            <td> ${alumno.correr}</td>
+            <td> ${alumno.correo}</td>
             <td> 
                <button class="btn-editar" data-id="${alumno.id}"> Editar </button>
                <button class="btn-eliminar" data-id="${alumno.id}"> Eliminar </button> 
@@ -226,13 +257,17 @@ function eliminarAlumno(id) {
     );
     localStorage.setItem("alumnos", JSON.stringify(alumnosActualizados))
     mostrarAlumnos(alumnosActualizados)
-    mostrarMensaje("Alumno eliminado correctamente")
+    mostrarMensaje("Alumno eliminado correctamente", "mje-exito")
 }
 
 listaAlumnos.addEventListener("click", (e) => {
     if (e.target.classList.contains("btn-eliminar")) {
         const id = Number(e.target.dataset.id)
         eliminarAlumno(id)
+    }
+    if (e.target.classList.contains("btn-editar")) {
+        const id = Number(e.target.dataset.id)
+        editarAlumno(id);
     }
 })
 
@@ -241,6 +276,10 @@ function editarAlumno(id) {
     const alumno = alumnos.find(alumno => alumno.id === id)
     document.querySelector("#nombre").value = alumno.nombre;//refresca input
     document.querySelector("#carrera").value = alumno.carrera;
-    document.querySelector("#correr").value = alumno.correo;
+    document.querySelector("#correo").value = alumno.correo;
     alumnosEditandoId = id;
+    formulario.querySelector("button").textContent = "Actualizar alumno"
 }
+
+const alumnos = obtenerAlumno() 
+mostrarAlumnos(alumnos)
