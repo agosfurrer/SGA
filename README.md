@@ -48,13 +48,11 @@ Actualmente:
 
 - HTML5
 - JavaScript
+- CSS3
 
 
 Próximamente:
 
-
-
-- CSS3
 
 - React
 
@@ -71,7 +69,21 @@ Próximamente:
 🚧 En desarrollo.
 
 - Versión:
-Clase 02
+Clase 10 Estructura actual
+SGA/
+|
+|-- index.html
+|-- alumnos.html
+|-- docentes.html
+|
+|-- CSS/
+     |-- estilos.css
+|
+|-- JS/
+     |-- alumnos.js
+     |-- docentes.js
+
+
 
 
 ## Autor
