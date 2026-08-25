@@ -153,12 +153,14 @@
 
 
 
-// para el index
+// para alumnos.js
 
-const formulario = document.querySelector("#formAlumno")
+const formulario = document.querySelector("#formulario")
 const mensaje = document.querySelector("#mensaje")
 let alumnosEditandoId = null;
 const listaAlumnos = document.querySelector("#listaAlumnos")
+let alumnosEditar = null;
+
 
 formulario.addEventListener("submit", function(event){
     event.preventDefault();//evita q se recargue
@@ -202,34 +204,40 @@ else {
     alumno.nombre = nombre
     alumno.carrera = carrera
     alumno.correo = correo
+
+    const datosActuales = {
+        nombre: nombre,
+        carrera: carrera,
+        correo: correo
+    }
+    // if(datosActuales.nombre === alumnosEditar.nombre && opcion 1
+    //     datosActuales.carrera === alumnosEditar.carrera &&   opcion 2
+    //     datosActuales.correo === alumnosEditar.correo) {  opcion 3
+    //         mostrarMensaje("No se realizaron cambios", "mje-error")
+    //         return
+    //     }
+    if(JSON.stringify(datosActuales)=== JSON.stringify(alumnosEditar)) {
+         mostrarMensaje("No se realizaron cambios", "mje-error")
+         return;
+    }
     alumnosEditandoId = null
+    alumnosEditar = null;
     formulario.querySelector("button").textContent = "Guardar alumno"
 
     mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
 }
 
-localStorage.setItem("alumnos", JSON.stringify(alumnos))
+//localStorage.setItem("alumnos", JSON.stringify(alumnos))
+
+guardarDatos("alumnos", alumnos)
 mostrarAlumnos(alumnos)
 formulario.reset()
 
 });
 
 function obtenerAlumno () {
-    const datos = localStorage.getItem("alumnos")
-    if (datos) {
-        return JSON.parse(datos)
+    return obtenerDatos("alumnos")
     }
-    return [] //evita q devuelva nulo
-}
-
-function mostrarMensaje(texto, clase) {
-    mensaje.textContent = texto;
-    mensaje.className = `mensaje ${clase}`
-    mensaje.style.display = "block"
-    setTimeout(() => {
-        mensaje.style.display = "none"
-    }, 3000);
-}
 
 
 function mostrarAlumnos(alumnos) {
@@ -277,6 +285,13 @@ function editarAlumno(id) {
     document.querySelector("#nombre").value = alumno.nombre;//refresca input
     document.querySelector("#carrera").value = alumno.carrera;
     document.querySelector("#correo").value = alumno.correo;
+
+    alumnosEditar = {
+        nombre: alumno.nombre,
+        carrera: alumno.carrera,
+        correo: alumno.correo
+    }
+
     alumnosEditandoId = id;
     formulario.querySelector("button").textContent = "Actualizar alumno"
 }
