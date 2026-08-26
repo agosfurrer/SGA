@@ -160,7 +160,9 @@ const mensaje = document.querySelector("#mensaje")
 let alumnosEditandoId = null;
 const listaAlumnos = document.querySelector("#listaAlumnos")
 let alumnosEditar = null;
-
+const btnCancelar = document.querySelector("#btnCancelar")
+btnCancelar.style.display = "none";
+const btnGuardar = document.querySelector("#btnGuardar")
 
 formulario.addEventListener("submit", function(event){
     event.preventDefault();//evita q se recargue
@@ -217,12 +219,12 @@ else {
     //         return
     //     }
     if(JSON.stringify(datosActuales)=== JSON.stringify(alumnosEditar)) {
-         mostrarMensaje("No se realizaron cambios", "mje-error")
+         mostrarMensaje("No se realizaron cambios", "mje-adv")
          return;
     }
     alumnosEditandoId = null
     alumnosEditar = null;
-    formulario.querySelector("button").textContent = "Guardar alumno"
+    btnGuardar.textContent = "Guardar alumno"
 
     mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
 }
@@ -293,8 +295,19 @@ function editarAlumno(id) {
     }
 
     alumnosEditandoId = id;
-    formulario.querySelector("button").textContent = "Actualizar alumno"
+    btnCancelar.style.display = "inline-block" //toma el elemento de una sola linea como el ancho de la pantalla
+    btnGuardar.textContent = "Actualizar alumno"
+    document.querySelector("#nombre").focus()
+}
+function cancelarEdicion() {
+    formulario.reset()
+    alumnosEditandoId = null
+    alumnosEditar = null
+    btnGuardar.textContent = "Guardar alumno"
+    btnCancelar.style.display = "none"
+     document.querySelector("#nombre").focus() //prepara para guardar otra cosa
 }
 
+btnCancelar.addEventListener("click", cancelarEdicion)
 const alumnos = obtenerAlumno() 
 mostrarAlumnos(alumnos)
