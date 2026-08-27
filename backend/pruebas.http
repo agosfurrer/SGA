@@ -1,0 +1,17 @@
+GET http://localhost:3000/alumnos
+
+### 
+GET http://localhost:3000/alumnos/7
+
+###
+GET http://localhost:3000/docentes
+
+###
+GET http://localhost:3000/docentes/6
+
+
+hacer 5 alumnos más y docentes tamb
+crear get alumnos/docentes
+buscar Id 
+probar en nav y rest
+consultar id existente
