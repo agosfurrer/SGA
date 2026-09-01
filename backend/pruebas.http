@@ -10,8 +10,44 @@ GET http://localhost:3000/docentes
 GET http://localhost:3000/docentes/6
 
 
-hacer 5 alumnos más y docentes tamb
-crear get alumnos/docentes
-buscar Id 
-probar en nav y rest
-consultar id existente
+//31-08-2026
+//recordar métodos
+###
+POST http://localhost:3000/alumnos
+//damos info para agregar un nuevo usuario --- lo de abajo es header
+Content-Type: application/json 
+//tipo de app -- Se debe de tener en cuenta los espacios como por ejemplo el siguiente
+
+{
+    "id": 8,
+    "nombre": "Lucía",
+    "carrera": "Programación"
+}
+
+###
+POST http://localhost:3000/alumnos
+//damos info para agregar un nuevo usuario --- lo de abajo es header
+Content-Type: application/json 
+//tipo de app -- Se debe de tener en cuenta los espacios como por ejemplo el siguiente
+
+{
+    "id": 9,
+    "nombre": "Kiara",
+    "carrera": "Legislación"
+}
+
+### 
+PUT http://localhost:3000/alumnos/3
+Content-Type: application/json
+
+{
+    "id": 3,
+    "nombre": "Ninia",
+    "carrera": "Legislación"
+}
+
+###
+GET http://localhost:3000/alumnos
+
+###
+DELETE http://localhost:3000/alumnos/3

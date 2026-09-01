@@ -5,12 +5,12 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    background-color: rgb(197, 177, 151);
-    color: rgb(82, 80, 80);
+    background-color: #f4f6f8;
+    color: #333;
 }
 
 header {
-    background-color: rgb(88, 11, 11);
+    background-color: #1f2937;
 }
 
 nav {
@@ -22,18 +22,18 @@ nav {
 }
 
 nav a {
-    color: aliceblue;
+    color: white;
     text-decoration: none;
     padding: 18px 20px;
     transition: background-color 0.2s;
 }
 
 nav a:hover {
-    background-color: rgb(148, 117, 117);
+    background-color: #374151;
 }
 
 nav a.activo {
-    background-color: rgb(124, 124, 123);
+    background-color: #4b5563;
 }
 
 main {
@@ -51,17 +51,16 @@ h2 {
 }
 
 .formulario-container {
-    background-color: aliceblue;
+    background-color: white;
     padding: 25px;
     border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgb(88, 11, 11);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-
 
 form {
     display: grid;
-    gap: 19px;
+    gap: 18px;
 }
 
 .campo {
@@ -76,40 +75,36 @@ form {
 
 .campo input {
     padding: 10px;
-    border: 1px solid crimson;
-    border-radius: 7px;
-    font-size: 17px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
 .campo input:focus {
-    outline: none; /*sin reborde*/
-    border-color: rgb(35, 70, 58);
-    box-shadow: 0 0 0 3px rgba(114, 27, 27, 0.699);
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 0235, 0.15);
 }
 
 button {
     padding: 11px 18px;
     border: none;
-    border-radius: 7px;
-    background-color: rgb(110, 33, 28);
-    color: aliceblue;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: white;
     font-size: 15px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: rgb(30, 30, 85);
+    background-color: #1d4ed8;
 }
 
 .lista-container {
-    background-color: rgb(244, 247, 248);
+    background-color: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgb(105, 83, 83);
-}
-
-form button {
-    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 table {
@@ -119,39 +114,62 @@ table {
 
 th, td {
     padding: 12px;
-    border-bottom: 1px solid coral;
+    border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
 th {
-    background-color: rgba(235, 60, 60, 0.527);
+    background-color: #f0f0f0;
 }
 
-.mje-exito {
-    background-color: rgba(39, 121, 59, 0.5);
-}
 
 .mensaje {
     position: fixed;
-    top: 40px;
+    top: 20px;
     right: 20px;
     padding: 15px 20px;
     border-radius: 8px;
     font-weight: bold;
-    background-color: rgba(55, 38, 153, 0.507);
-    color: rgba(8, 16, 122, 0.705);
-    box-shadow: 0 4px 10px rgb(61, 160, 226);
-    z-index: 1000;
+    background-color: #fee2e2;
+    color: white;
     display: none;
+    z-index: 1000;
+}
+.mje-error {
+    background-color: #f39393;
 }
 
-.mje-error {
-    background-color: rgba(114, 27, 27, 0.699);
-   
+.mje-exito {
+    background-color: #16a34a;
 }
 
 .mje-adv {
-    background-color: rgb(248, 224, 6);
+    background-color: #f1bd63;
+}
+
+.btn-editar, .btn-eliminar {
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 3px;
+    font-size: 14px;
+}
+.btn-editar {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+.btn-eliminar {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+.btn-editar:hover {
+    background-color: #f59e0b;
+    color: white;
+}
+.btn-eliminar:hover {
+    background-color: #dc2626;
+    color: white;
 }
 
 .inicio {
@@ -172,23 +190,23 @@ th {
 .tarjeta {
     display: block;
     text-decoration: none;
-    color: bisque;
-    background-color: aliceblue;
+    color: #333;
+    background-color: white;
     padding: 35px 25px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(94, 54, 54, 0.699);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: transform 0.2, box-shadow 0.2s;
 }
 
 .tarjeta:hover {
     transform: translateY(-4px);
-    box-shadow: rgba(114, 27, 27, 0.699);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
 .tarjeta i {
     font-size: 40px;
     margin-bottom: 15px;
-    color: blue;
+    color: #2563eb;
 }
 
 .tarjeta h2 {
@@ -196,17 +214,17 @@ th {
 }
 
 .tarjeta p {
-    color: aquamarine;
+    color: #666;
 }
 
 .tarjeta-deshabilitada {
     opacity: 0.5;
     cursor: default;
 }
- 
+
 .tarjeta-deshabilitada:hover {
     transform: none;
-    box-shadow: 0 2px 8px rgba(68, 35, 35, 0.699);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .acciones-form {
@@ -214,10 +232,10 @@ th {
     gap: 10px;
 }
 
-.btn-Cancelar {
-    background-color: antiquewhite;
+.btn-cancelar {
+    background-color: #6b7280;
 }
 
-.btn-Cancelar:hover {
-    background-color: aqua;
+.btn-cancelar:hover {
+    background-color: #4b5563;
 }
