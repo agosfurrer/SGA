@@ -1,9 +1,10 @@
 const express = require("express")
-
 const app = express()
-
 app.use(express.json())
-
+const alumnosRoutes = require("./routes/alumnos.routes.js")//transime a la ruta alumnos routes
+app.use("/alumnos", alumnosRoutes)//arma esta ruta cuando alumnos routes llame
+const docentesRoutes = require("./routes/docentes.routes.js")//transime a la ruta alumnos routes
+app.use("/docentes", docentesRoutes)//arma esta ruta cuando alumnos routes llame
 
 //alumnos
 let alumnos = [
@@ -45,15 +46,14 @@ let alumnos = [
     }
 ]
 
-app.get("/alumnos", (req, res) => {
-    res.json(alumnos)
+//creo el middleware
+app.use((req, res, next) => {
+    console.log(req.method)
+    console.log(req.url)
+    next()//muestra la respuesta
 })
 
-app.get("/alumnos/:id", (req, res) => {
-    const id = Number(req.params.id) 
-    const alumno = alumnos.find(a => a.id === id) 
-    res.json(alumno) 
-})
+
 
 //docentes
 const docentes = [
@@ -95,42 +95,10 @@ const docentes = [
     }
 ]
 
-app.get("/docentes", (req, res) => {
-    res.json(docentes)
-})
-
-app.get("/docentes/:id", (req, res) => {
-    const id = Number(req.params.id) 
-    const docente = docentes.find(a => a.id === id) 
-    res.json(docente) 
-})
 
 
-//creamos solicitud post
-app.post("/alumnos", (req, res) => {
-    const nuevoAlumno = req.body
-    alumnos.push(nuevoAlumno)
-    res.json({mensaje: "Alumno registrado correctamente"})
-    //console.log(req.body) para ver que esta enviando el cliente en un inicio
-})
-
-// req.params me toma el id
-// req.body busca
-app.put("/alumnos/:id", (req, res) => {
-    const id = Number(req.params.id)
-    const alumno = alumnos.find(alumno => alumno.id === id)//compara el id que trae
-    alumno.id = req.body.id
-    alumno.nombre = req.body.nombre
-    alumno.carrera = req.body.carrera
-    res.json({mensaje: "Alumno actualizado correctamente"})
-})
-
-app.delete("/alumnos/:id", (req, res) => {
-    const id = Number(req.params.id)
-    alumnos = alumnos.filter(alumno => alumno.id !== id)
-    res.json({mensaje: "Alumno eliminado correctamente"})
-})
-
+//01-09-2026
+// Creación del Middleware con Express.json
 
 //escucha
 app.listen(3000, () => {
