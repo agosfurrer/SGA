@@ -1,5 +1,5 @@
 const express = require("express")
-const router = express.Routes( ) //permite hacer las independencias de los archivos
+const router = express.Router( ) //permite hacer las independencias de los archivos
 
 router.get("/", (req, res) => {
     res.json(docentes)

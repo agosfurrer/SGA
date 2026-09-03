@@ -49,16 +49,13 @@ Actualmente:
 - HTML5
 - JavaScript
 - CSS3
-
+- Node.js
+- Express
 
 Próximamente:
 
 
 - React
-
-- Node.js
-
-- Express
 
 - MongoDB
 
@@ -92,8 +89,13 @@ backend
 - Persistencia mediante localStorage
 - Organización del código y refactorización
 - Separación inicial entre frontend y backend
+- Implementación de validaciones para los datos recibidos para los datos recibidos mediante req.body
+- Uso de status 400 para datos inválidos
+- Status 404 para alumno no encotrado
+- Status 201 para alumno registrar nuevo alumno
+- Manejo básico de errores en las operaciones del CRUD
 
-#Almacenamiento
+## Almacenamiento
 localStorage
 JSON.stringify()
 JSON:parse()

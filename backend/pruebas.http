@@ -51,3 +51,12 @@ GET http://localhost:3000/alumnos
 
 ###
 DELETE http://localhost:3000/alumnos/3
+
+###
+POST http://localhost:3000/alumnos
+//damos info para agregar un nuevo usuario --- lo de abajo es header
+Content-Type: application/json 
+
+{//aunq esté vacío se manda de igual manera -- toma el nombre con valor numérico y eso no debe pasar
+    "nombre": 234
+}
