@@ -1,13 +1,18 @@
 const express = require("express")
-const router = express.Router( ) //permite hacer las independencias de los archivos
+const router = express.Router()
 
-router.get("/", (req, res) => {
-    res.json(docentes)
-})
+const {
+    obtenerDocentes,
+    obtenerDocente,
+    crearDocente,
+    actualizarDocente,
+    eliminarDocente
+} = require("../controllers/docentes.controller.js")
 
-router.get("/:id", (req, res) => {
-    const id = Number(req.params.id) 
-    const docente = docentes.find(a => a.id === id) 
-    res.json(docente) 
-})
+router.get("/", obtenerDocentes)
+router.get("/:id", obtenerDocente)
+router.post("/", crearDocente)
+router.put("/:id", actualizarDocente)
+router.delete("/:id", eliminarDocente)
 
+module.exports = router
