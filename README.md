@@ -51,13 +51,12 @@ Actualmente:
 - CSS3
 - Node.js
 - Express
+- MongoDB
 
 Próximamente:
 
 
 - React
-
-- MongoDB
 
 
 
@@ -94,11 +93,19 @@ backend
 - Status 404 para alumno no encotrado
 - Status 201 para alumno registrar nuevo alumno
 - Manejo básico de errores en las operaciones del CRUD
+- Instalación de Mongoose
+- Creación de la conexión con MongoDB en config database.js
+- Creación del esquema y modelo alumnos
+- Reemplazo del array en memoria por una coleciión de mongoDB
+- Modificación de GET alumnos para consulta MongoDB mediante mongoose
+- Prueba de la API con datos almacenados en MongoDB
+- 
 
 ## Almacenamiento
 localStorage
 JSON.stringify()
 JSON:parse()
+MongoDB
 
 ## Autor
 

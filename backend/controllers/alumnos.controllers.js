@@ -1,6 +1,7 @@
-const alumnos = require("../data/alumnos.js")
+const Alumno = require("../models/Alumno.js")//de aca obtiene el esquema para tener la info
 
-function obtenerAlumnos(req,res) {
+async function obtenerAlumnos(req,res) { //conexión asincrónica, es externo
+    const alumnos = await Alumno.find()
     res.json(alumnos)
 }
 
@@ -18,12 +19,12 @@ function obtenerAlumno(req,res) {
 function crearAlumno  (req, res)  {
     const nuevoAlumno = req.body
     const {id, nombre, carrera} = req.body //q me traiga en el body- desestructura
-    if (!id || !nombre || !carrera) {
+    if (!id || !nombre || !carrera) { //no esta cargando datos 
         return res.status(400).json({
             mensaje: "Todos los campos son obligatorios"
         })
     }
-    if (typeof nombre !== "string") {
+    if (typeof nombre !== "string") { // si no es string
         return res.status(400).json({
             mensaje: "El nombre debe ser un texto"
         })
