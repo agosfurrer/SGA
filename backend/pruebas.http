@@ -37,15 +37,16 @@ Content-Type: application/json
 }
 
 ### 
-PUT http://localhost:3000/alumnos/3
+PUT http://localhost:3000/alumnos/1003
 Content-Type: application/json
 
 {
-    "id": 3,
-    "nombre": "Ninia",
-    "carrera": "Legislación"
+    "legajo":1003,
+    "nombre": "Ginna",
+    "carrera": "Sistemas",
+    "correo": "gigia@gmail.com"
 }
-
+//cambiamos de id a legajo
 ###
 GET http://localhost:3000/alumnos
 

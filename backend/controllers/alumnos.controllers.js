@@ -1,25 +1,28 @@
 const Alumno = require("../models/Alumno.js")//de aca obtiene el esquema para tener la info
+//Alumno nos referimos al modelo, ayuda a trabajar con la info almacenada en la BD
+
+
 
 async function obtenerAlumnos(req,res) { //conexión asincrónica, es externo
     const alumnos = await Alumno.find()
     res.json(alumnos)
 }
 
-function obtenerAlumno(req,res) {
-    const id = Number(req.params.id)
-    const alumno = alumnos.find(a => a.id === id)
+async function obtenerAlumno(req,res) {
+    const alumno = await Alumno.findOne({
+        legajo: Number(req.params.id)})//param trae desde la url los datos tipo id
     if(!alumno) {
         return res.status(404).json({
             mensaje: "Alumno no encontrado"
         })
     }
-    res.json(alumnos)
+    res.json(alumno)
 }
 
-function crearAlumno  (req, res)  {
-    const nuevoAlumno = req.body
-    const {id, nombre, carrera} = req.body //q me traiga en el body- desestructura
-    if (!id || !nombre || !carrera) { //no esta cargando datos 
+//const {id nombre carrera} = req.body q me traiga en el body- desestructura
+async function crearAlumno  (req, res)  {
+     const {legajo, nombre, carrera, correo} = req.body
+    if (!legajo || !nombre || !carrera || !correo) { //no esta cargando datos 
         return res.status(400).json({
             mensaje: "Todos los campos son obligatorios"
         })
@@ -29,37 +32,42 @@ function crearAlumno  (req, res)  {
             mensaje: "El nombre debe ser un texto"
         })
     }
-    alumnos.push(nuevoAlumno)
-    res.status(201).json({mensaje: "Alumno registrado correctamente"})//
+    const nuevoAlumno = await Alumno.create({
+        legajo,
+        nombre,
+        carrera,
+        correo
+    })
+    res.status(201).json(nuevoAlumno)//
     //console.log(req.body) para ver que esta enviando el cliente en un inicio
 }
 
-function actualizarAlumno (req, res)  { // se cambia app por routes x la ruta correspondiente
-    const id = Number(req.params.id)
-    const alumno = alumnos.find(alumno => alumno.id === id)//compara el id que trae
+async function actualizarAlumno (req, res)  { // se cambia app por routes x la ruta correspondiente
+    const alumno = await Alumno.findOneAndUpdate(
+        {legajo: Number(req.params.id)},
+        req.body, //dice que devuelva todo el cuerpo
+        {
+            returnDocument: "after"
+        }
+    )
     if(!alumno) {
         return res.status(404).json({
             mensaje: "Alumno no encontrado"
         })
     }
-    alumno.id = req.body.id
-    alumno.nombre = req.body.nombre
-    alumno.carrera = req.body.carrera
-    res.json({mensaje: "Alumno actualizado correctamente"})
+    res.json(alumno)
 }
 
-function  eliminarAlumno  (req, res) { //trabajamos con el nombre de la función no función flecha
-    const id = Number(req.params.id)
-    const alumno = alumnos.find(a => a.id === id)
+async function  eliminarAlumno  (req, res) { //trabajamos con el nombre de la función no función flecha
+    const alumno = await Alumno.findOneAndDelete(
+        {legajo: Number(req.params.id)}
+    )
     if(!alumno) {
         return res.status(404).json({
             mensaje: "Alumno no encontrado"
         })
     }
-    const alumnosActualizados = alumnos.filter(alumno => alumno.id !== id)//pasa el nuevo array generado por filter()
-
-    alumnos.lenght = 0
-    alumnos.push(...alumnosActualizados)//agrega directamente todo el nuevo array hacia el final
+    
     res.json({mensaje: "Alumno eliminado correctamente"})
 }
 

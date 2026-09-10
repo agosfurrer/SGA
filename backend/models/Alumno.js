@@ -8,6 +8,9 @@ const alumnoSchema = new mongoose.Schema({
     nombre: String,
     carrera: String,
     correo: String
+},
+{
+    versionKey: false //debería de desaparecer los próximos generados, versión = "__v: " a partir de este
 })
 
 const Alumno = mongoose.model("Alumno", alumnoSchema)
