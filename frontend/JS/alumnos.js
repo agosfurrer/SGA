@@ -164,6 +164,13 @@ const btnCancelar = document.querySelector("#btnCancelar")
 btnCancelar.style.display = "none"
 const btnGuardar = document.querySelector("#btnGuardar")
 
+// async function cargarAlumnos(){
+//     const respuesta = await fetch("http://localhost:3000/alumnos")
+//     const alumnos = await respuesta.json()
+//     console.table(alumnos)
+// }
+// cargarAlumnos()    DE PRUEBA 
+
 formulario.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -233,8 +240,10 @@ formulario.addEventListener("submit", function (event) {
 });
 
 
-function obtenerAlumnos() {
-    return obtenerDatos("alumnos")
+async function obtenerAlumnos() {
+    const respuesta = await fetch("http://localhost:3000/alumnos")
+    const alumnos = await respuesta.json()
+    return alumnos
 }
 
 
@@ -244,20 +253,20 @@ function mostraAlumnos(alumnos) {
     for (const alumno of alumnos) {
         listaAlumnos.innerHTML += `
         <tr>
-            <td>${alumno.id}</td>
+            <td>${alumno.legajo}</td>
             <td>${alumno.nombre}</td>
             <td>${alumno.carrera}</td>
             <td>${alumno.correo}</td>
             <td>
                 <button 
                 class="btn-editar" 
-                data-id="${alumno.id}"
+                data-id="${alumno.legajo}"
                 title="Editar alumno">
                 <i class="fa-solid fa-pen"></i>
                 </button>
                 <button 
                 class="btn-eliminar" 
-                data-id="${alumno.id}"
+                data-id="${alumno.legajo}"
                 title="Eliminar alumno">
                 <i class="fa-solid fa-trash"></i>
                 </button>
@@ -328,5 +337,9 @@ function cancelarEdicion(){
 
 btnCancelar.addEventListener("click", cancelarEdicion)
 
-const alumnos = obtenerAlumnos()
-mostraAlumnos(alumnos)  
+async function iniciar(){
+    const alumnos = await obtenerAlumnos()
+    mostraAlumnos(alumnos)  
+}
+
+iniciar()

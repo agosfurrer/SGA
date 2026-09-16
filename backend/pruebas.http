@@ -37,16 +37,20 @@ Content-Type: application/json
 }
 
 ### 
-PUT http://localhost:3000/alumnos/1003
+PUT http://localhost:3000/alumnos/1003  
 Content-Type: application/json
-
+//actualiza legajo de alumno existente
 {
-    "legajo":1003,
+    //sacamos el legajo xq no se debe de modificar
     "nombre": "Ginna",
     "carrera": "Sistemas",
     "correo": "gigia@gmail.com"
 }
 //cambiamos de id a legajo
+
+//arreglar código
+
+
 ###
 GET http://localhost:3000/alumnos
 

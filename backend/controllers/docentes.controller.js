@@ -1,12 +1,15 @@
-const docentes = require("../data/docentes.js")
+const Docente = require("../models/Docente.js") // de aca obtiene el esquema para tener la info
+// Docente nos referimos al modelo, ayuda a trabajar con la info almacenada en la BD
 
-function obtenerDocentes(req, res) {
+async function obtenerDocentes(req, res) { // conexión asincrónica, es externo
+    const docentes = await Docente.find()
     res.json(docentes)
 }
 
-function obtenerDocente(req, res) {
-    const id = Number(req.params.id)
-    const docente = docentes.find(d => d.id === id)
+async function obtenerDocente(req, res) {
+    const docente = await Docente.findOne({
+        legajo: Number(req.params.id) // param trae desde la url los datos tipo id
+    }) 
     if (!docente) {
         return res.status(404).json({
             mensaje: "Docente no encontrado"
@@ -15,57 +18,68 @@ function obtenerDocente(req, res) {
     res.json(docente)
 }
 
-function crearDocente(req, res) {
-    const nuevoDocente = req.body
-    const { id, nombre, especialidad } = req.body
-
-    if (!id || !nombre || !especialidad) {
+async function crearDocente(req, res) {
+    const { legajo, nombre, especialidad, correo } = req.body
+    if (!legajo || !nombre || !especialidad || !correo) { // no esta cargando datos 
         return res.status(400).json({
             mensaje: "Todos los campos son obligatorios"
         })
     }
-
-    if (typeof nombre !== "string") {
+    if (typeof nombre !== "string") { // si no es string
         return res.status(400).json({
             mensaje: "El nombre debe ser un texto"
         })
     }
+    if (typeof legajo !== "number") { // tipo legajo distinto a number
+        return res.status(400).json({
+            mensaje: "El legajo debe ser un número"
+        })
+    }
+    // validación existencia
+    const existe = await Docente.findOne({
+        legajo
+    })
+    if (existe) {
+        return res.status(400).json({
+            mensaje: "El legajo ya existe"
+        })
+    }
 
-    docentes.push(nuevoDocente)
-    res.status(201).json({ mensaje: "Docente registrado correctamente" })
+    const nuevoDocente = await Docente.create({
+        legajo,
+        nombre,
+        especialidad,
+        correo
+    })
+    res.status(201).json(nuevoDocente)
 }
 
-function actualizarDocente(req, res) {
-    const id = Number(req.params.id)
-    const docente = docentes.find(d => d.id === id)
-
+async function actualizarDocente(req, res) {
+    const { nombre, especialidad, correo } = req.body // campos a usar para que devuelva y legajo para busqueda
+    const docente = await Docente.findOneAndUpdate(
+        { legajo: Number(req.params.id) },
+        { nombre, especialidad, correo },
+        {
+            returnDocument: "after" // devolvía el documento anterior, entonces dice actualizar pero q devuelva el nuevo
+        }
+    )
     if (!docente) {
         return res.status(404).json({
             mensaje: "Docente no encontrado"
         })
     }
-
-    docente.id = req.body.id
-    docente.nombre = req.body.nombre
-    docente.especialidad = req.body.especialidad
-
-    res.json({ mensaje: "Docente actualizado correctamente" })
+    res.json(docente)
 }
 
-function eliminarDocente(req, res) {
-    const id = Number(req.params.id)
-    const docente = docentes.find(d => d.id === id)
-
+async function eliminarDocente(req, res) {
+    const docente = await Docente.findOneAndDelete(
+        { legajo: Number(req.params.id) }
+    )
     if (!docente) {
         return res.status(404).json({
             mensaje: "Docente no encontrado"
         })
     }
-
-    const docentesActualizados = docentes.filter(d => d.id !== id)
-
-    docentes.length = 0
-    docentes.push(...docentesActualizados)
 
     res.json({ mensaje: "Docente eliminado correctamente" })
 }
@@ -76,4 +90,4 @@ module.exports = {
     crearDocente,
     actualizarDocente,
     eliminarDocente
-}
+} // exporta la info a quien desee

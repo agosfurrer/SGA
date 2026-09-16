@@ -32,6 +32,21 @@ async function crearAlumno  (req, res)  {
             mensaje: "El nombre debe ser un texto"
         })
     }
+    if (typeof legajo !== "number") {// tipo legajo distindo a number
+        return res.status(400).json({
+            mensaje: "El legajo debe ser un número"
+        })
+    }
+    //validación existencia
+    const existe = await Alumno.findOne({
+        legajo
+    })
+    if (existe) {
+        return res.status(400).json({
+            mensaje: "El legajo ya existe"
+        })
+    }
+
     const nuevoAlumno = await Alumno.create({
         legajo,
         nombre,
@@ -43,11 +58,13 @@ async function crearAlumno  (req, res)  {
 }
 
 async function actualizarAlumno (req, res)  { // se cambia app por routes x la ruta correspondiente
+    const {nombre, carrera, correo} = req.body //campos a usar para que devuelva y legajo para busqueda
     const alumno = await Alumno.findOneAndUpdate(
         {legajo: Number(req.params.id)},
-        req.body, //dice que devuelva todo el cuerpo
+        //req,body, dice que devuelva todo el cuerpo
+        {nombre,carrera,correo},
         {
-            returnDocument: "after"
+            returnDocument: "after" //devolvía el documento anterior, entonces dice actualizar pero q devuelva el nuevo
         }
     )
     if(!alumno) {
@@ -71,4 +88,10 @@ async function  eliminarAlumno  (req, res) { //trabajamos con el nombre de la fu
     res.json({mensaje: "Alumno eliminado correctamente"})
 }
 
-module.exports = {obtenerAlumnos, obtenerAlumno, crearAlumno, actualizarAlumno, eliminarAlumno} //exporta la info a quien desee
+module.exports = {
+    obtenerAlumnos, 
+    obtenerAlumno, 
+    crearAlumno, 
+    actualizarAlumno, 
+    eliminarAlumno
+} //exporta la info a quien desee

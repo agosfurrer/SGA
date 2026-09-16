@@ -6,3 +6,5 @@
 
 # Node.js
 node_modules/
+
+# tiene detalles o datos q no sean públicos entonces se hace el gitignore para no subir a github
