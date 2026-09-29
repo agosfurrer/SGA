@@ -156,7 +156,7 @@
 // para alumnos.js
 
 const formulario = document.querySelector("#formulario")
-const mensaje = document.querySelector("#mensaje")
+//const mensaje = document.querySelector("#mensaje")
 const listaAlumnos = document.querySelector("#listaAlumnos")
 let alumnoEditandoLegajo = null
 let alumnoEditar = null
@@ -193,6 +193,9 @@ formulario.addEventListener("submit", async function (event) {
 
 
 //POST xq debemos hacer un nuevo alumno
+
+try {
+
     if (alumnoEditandoLegajo === null) { // si viene nulo es un documento nuevo
         const alumno = {
             legajo: Number(legajo),
@@ -208,9 +211,8 @@ formulario.addEventListener("submit", async function (event) {
             body: JSON.stringify(alumno)
         })
 
-        if(!respuesta.ok){ //respuesta no ok
-            mostrarMensaje("No se pudo guardar el alumno", "mje-error")
-            return 
+        if(!respuesta.ok){ //respuesta no ok status 200 a 299
+            throw new Error("La API respondió con un error.")
         }
         
         
@@ -235,34 +237,43 @@ formulario.addEventListener("submit", async function (event) {
                 "Content-Type": "application"
             },
             body: JSON.stringify({
-            nombre: nombre,
-            carrera: carrera,
-            correo:correo
-        })
+                nombre: nombre,
+                carrera: carrera,
+                correo:correo
+            })
         }) 
         if(!respuesta.ok) {
-            mostrarMensaje("No se pudo actualizar el alumno", "mje-error")
-            return
+            throw new Eror("La API respondió con un error.")
         }
         alumnoEditandoLegajo = null
         alumnoEditar = null
         btnGuardar.textContent = "Guardar Alumno"
         document.querySelector("#legajo").disabled = false
-
+        
         mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
-    }
-
+    }    
+    
     // const alumnosActualizados = await obtenerAlumnos() //para q muestre la tabla con info nueva
     // mostraAlumnos(alumnosActualizados)
-      await actualizarListaAlumnos()
+    await actualizarListaAlumnos()
     formulario.reset()
+}
+
+catch (error) {
+    console.error(error.message)          //console error técnico
+    mostrarMensaje("No fue posible realizar la operación.", "mje-error")
+}
 });
 
-
 async function obtenerAlumnos() {
-    const respuesta = await fetch(API_ALUMNOS)
-    const alumnos = await respuesta.json()
-    return alumnos
+    try {
+        const respuesta = await fetch(API_ALUMNOS)
+        const alumnos = await respuesta.json()
+        return alumnos
+    } catch(error) {
+        console.error(error.message)
+        throw error //para q el usuario sepa q hubo un problema
+    }
 }
 
 
@@ -318,8 +329,13 @@ async function eliminarAlumno(legajo) {
 }
 
 async function actualizarListaAlumnos () {
-    const alumnos = await obtenerAlumnos()
-    mostraAlumnos(alumnos)
+    try{
+
+        const alumnos = await obtenerAlumnos()
+        mostraAlumnos(alumnos)
+    } catch(error){
+        mostrarMensaje("No se pudo cargar la lista de alumnos", "mje-error")
+    }
 }
 
 listaAlumnos.addEventListener("click", (e) => {
