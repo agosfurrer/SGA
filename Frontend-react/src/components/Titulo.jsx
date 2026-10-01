@@ -1,7 +1,7 @@
-function Titulo () 
+function Titulo ({texto,color}) //sin props
 {
     return (
-        <h1>Sistema de Gestión Academica</h1>
+        <h1 style={{color:color }}>{texto}</h1>
     )
 }
 
