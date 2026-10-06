@@ -25,7 +25,11 @@ function Incrementar (){
                 height: "50px", 
                 fontSize: "31px"
             }}>+</button> 
-            <button onClick={decremento}>-</button> 
+            <button onClick={decremento} style={{
+                width: "50px", 
+                height: "50px", 
+                fontSize: "31px"
+            }}>-</button> 
         </div> <br />
         <button onClick={() => setMostrar(!mostrar)}>Mostrar / Ocultar</button> 
         {mostrar && <p>Información visible</p>}
