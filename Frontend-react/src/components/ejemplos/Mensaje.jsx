@@ -10,7 +10,7 @@ function Mensaje () { //componente de react
             : "Hola Alumnos"
         )
     }
-
+// useState es para estados
     return ( //formato salida lo que vemos
         <>
         <h2>{mensaje}</h2>

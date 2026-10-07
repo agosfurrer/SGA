@@ -7,7 +7,11 @@
 // import { Adivina } from "./components/ejemplos/Adivina"
 // import Mensaje from "./components/ejemplos/Mensaje"
 // import TamanioTexto from "./components/ejemplos/TamanioTexto"
-import FormularioA from "./components/FormularioA"
+//import FormularioA from "./components/FormularioA"
+
+import { useEffect, useState } from "react"
+
+
 
 function App () 
 {
@@ -21,10 +25,47 @@ function App ()
     //   console.log("form enviado")
 
     // }
+    // const [alumno] = useState({
+    //   nombre: "Ana",
+    //   curso: "Programación IV"
+    // })
+    // const [contador, setContador] = useState(0)
+   
+    // useEffect(() => {
+    //   document.title=`Alumno: ${alumno.nombre}`
+    // }, [alumno]) 
+
+    // useEffect(() => {
+      
+    //   document.title= `Contador: ${contador}`
+    // }, [contador])
+    //corchetes: determina q el efecto se da una vez cuando se carga
+    //si contador ca,bia el efecto se activa
  
+    const [nombre, setNombre] = useState("")
+
+    useEffect(() => {
+      if (nombre) {
+        document.title = `Hola ${nombre}`
+      } else {
+        document.title = `Mi app`
+      }
+    }, [nombre])
+
+ 
+
   return ( //necesita estar dentro de un mismo array
     <>  
+<input 
+value = {nombre}
+onChange= {(e) => setNombre(e.target.value)} 
+placeholder="Escribí tu nombre"/>
+<h2>Hola {nombre}</h2>
 
+
+{/* 
+<h2>{contador}</h2>
+<button onClick={() => setContador(contador + 1)}>+</button> */}
     {/* <form onSubmit={guardar}>
       <input  /> 
       <button type="submit">Guardar</button>
@@ -35,7 +76,7 @@ function App ()
 <input value={nombre} onChange={(e) => setNombre(e.target.value)}/>
 <p>Hola {nombre}</p> */}
 
-<FormularioA />
+{/* <FormularioA /> */}
 
 
     {/* PRUEBA
