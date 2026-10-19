@@ -1,10 +1,31 @@
 import { useEffect, useState } from "react"
 const API_ALUMNOS = "http://localhost:3000/alumnos"
 
-export function ListaAlumnos ({actualizar}) {
+export function ListaAlumnos ({actualizar, onAlumnoCreado}) {
     const [alumnos,setAlumnos] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
+
+    async function eliminarAlumno(legajo) {
+        const confirmar = window.confirm("¿Seguro que querés eliminar al alumno?")
+        if (!confirmar) {//si el usuario puso cancelar, distinto de true
+            return 
+
+        }
+        try {
+            const respuesta = await fetch(`${API_ALUMNOS}/${legajo}`, {method: "DELETE"}
+
+            )
+            if(!respuesta.ok) {
+                throw new Error(`No se pudo eliminar. Estado HTTP: ${respuesta.status}`)//error 404 not found
+            }
+            onAlumnoCreado()
+        } catch (error) {
+            console.error("Error al eliminar: ", error)
+            alert(error.mensaje || "No se pudo eliminar alumno")
+        }
+    }
+
     useEffect(() => { //no se puede hacer asincrónico use-effect
         async function cargarAlumnos() {
             setCargando(true)
@@ -52,6 +73,12 @@ export function ListaAlumnos ({actualizar}) {
             {alumnos.map(alumno => (
                 <li key= {alumno.legajo}>
                     {alumno.legajo} - {alumno.nombre} - {alumno.carrera}
+                    <br />
+                    <button type="button"
+                    onClick={() => eliminarAlumno(alumno.legajo)}
+                    >
+                        Eliminar
+                    </button>
                 </li>
             ))}
            </ul> 
