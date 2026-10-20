@@ -1,12 +1,12 @@
 import { useState } from "react";
 const API_ALUMNOS = "http://localhost:3000/alumnos"
 
-function FormularioA({onAlumnoCreado}) {
+function FormularioA({onAlumnoCreado, alumnoEditar, onCancelar}) {
     const [formulario,setFormulario] = useState({
-        legajo: "",
-        nombre: "",
-        carrera: "",
-        correo: ""
+        legajo: String(alumnoEditar?.legajo ?? ""),
+        nombre: alumnoEditar?.nombre ?? "",
+        carrera: alumnoEditar?.carrera ?? "",
+        correo: alumnoEditar?.correo ?? "" //si viene con info muestra si no vacío
     })
     const [error, setError] = useState("")
     const [guardando, setGuardando] = useState(false)
@@ -25,31 +25,37 @@ function FormularioA({onAlumnoCreado}) {
     // const [legajo, setLegajo] = useState("")
     // const [carrera, setCarrera] = useState("")
     
+    
     async function guardar(e) {
         e.preventDefault()
         setError("")
         setGuardando(true) // para decir q esta guardando
-
+        
+        const alumno = {
+            ...formulario,
+            legajo:Number(formulario.legajo)
+        }
+        const editando = Boolean(alumnoEditar) // si viene como null editando da falso e iriamos con POST, si no PUT
+        const url = editando ?`${API_ALUMNOS}/${alumnoEditar.legajo}`
+        : API_ALUMNOS
+        
         try {
-            const alumno = {
-                ...formulario,
-                legajo: Number(formulario.legajo) //hace conversión
-            }
-            const respuesta = await fetch(API_ALUMNOS, {
-                method:"POST",
+            
+            const respuesta = await fetch(url, {
+                method:editando? "PUT" : "POST",
                 header: {"Content-Type": "application/json"},
                 body: JSON.stringify(alumno)
-        })
-        if(!respuesta.ok) {
-            throw new Error(`No se pudo guardar el alumno. Estado http: ${respuesta.status}`)
-        }
-        setFormulario({ //resetea el formulario
-            legajo: "",
-            nombre: "",
-            carrera: "",
-            correo: ""
-        })
-        onAlumnoCreado
+            })
+            if(!respuesta.ok) {
+                throw new Error(`No se pudo guardar el alumno. Estado http: ${respuesta.status}`)
+            }
+            setFormulario({ //resetea el formulario
+                legajo: "",
+                nombre: "",
+                carrera: "",
+                correo: ""
+            })
+            onAlumnoCreado
         } 
         catch (error) { //da el error específico
             console.error("Error al guardar", error)
@@ -62,14 +68,18 @@ function FormularioA({onAlumnoCreado}) {
         // console.log(legajo)
         // console.log(carrera)
     }
+    function cancelar() {
+        onCancelar()
+    }
 
     return (
         <> 
+        <h2>{alumnoEditar ? "Editar alumno" : "Nuevo alumno"}</h2>
         <form onSubmit= {guardar}>
             <label htmlFor="legajo">Legajo</label>
             <input 
             id="legajo"
-            name= "nombre"
+            name= "legajo"
             value={formulario.legajo} 
             onChange={manejarCambio}
             required
@@ -99,8 +109,19 @@ function FormularioA({onAlumnoCreado}) {
             required 
             />
             <button type="submit" disabled={guardando}>
-                {guardando ? "Guardando..." : "Guardar"}
+                {guardando ? "Guardando..."
+                : alumnoEditar
+                  ? "Guardar cambios" 
+                  : "Guardar"}
             </button>
+            {alumnoEditar && (
+                <button
+                type="button"
+                onClick={cancelar}
+                disabled={guardando}>
+                    Cancelar
+                </button>
+            )}
             <br />
             {error && <p role="alert"> {error}</p>}
        
