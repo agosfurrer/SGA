@@ -1,6 +1,8 @@
 import FormularioA from './components/FormularioA'
 import {ListaAlumnos} from './components/ListaAlumnos'
 import { useState } from "react"
+import EjemploMUI from './components/ejemplos/EjemploMUI'
+import FAQ from './components/FAQ'
 
 function App() {
   const [actualizar,setActualizar] = useState(0) //es un contador
@@ -19,6 +21,7 @@ function seleccionarAlumno(alumno) { //para guardar el objeto donde se seleccion
   return (
     <>
   <main>
+    <EjemploMUI />
     <FormularioA key={alumnoEditar?.legajo ?? "nuevo"}
     onAlumnoCreado={alumnoCreado}
     alumnoEditar={alumnoEditar}
@@ -26,6 +29,7 @@ function seleccionarAlumno(alumno) { //para guardar el objeto donde se seleccion
   <ListaAlumnos actualizar={actualizar} 
   onAlumnoCreado={(alumnoCreado)}
   onEditarAlumno={seleccionarAlumno}/> {/*use lista para actualizar interface*/ }
+  <FAQ />
   </main>
   </>
 )
