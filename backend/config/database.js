@@ -4,7 +4,7 @@ async function conectarDB() { //conecta con la base de datos
     try {
         await mongoose.connect(process.env.MONGO_URI)
         console.log("Base de Datos conectada")
-    } catch {
+    } catch (error) { 
         console.log(error)
     }
 }

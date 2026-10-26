@@ -153,16 +153,16 @@
 
 
 
-// para alumnos.js
-
 const formulario = document.querySelector("#formulario")
-//const mensaje = document.querySelector("#mensaje")
 const listaAlumnos = document.querySelector("#listaAlumnos")
 let alumnoEditandoLegajo = null
 let alumnoEditar = null
-const btnCancelar = document.querySelector("#btnCancelar")
+
+
+const btnCancelar = document.querySelector("#btn-cancelar")
 btnCancelar.style.display = "none"
-const btnGuardar = document.querySelector("#btnGuardar")
+const btnGuardar = document.querySelector("#btn-guardar")
+
 const API_ALUMNOS = "http://localhost:3000/alumnos"
 
 
@@ -189,80 +189,64 @@ formulario.addEventListener("submit", async function (event) {
         return
     }
 
-
-
-
-//POST xq debemos hacer un nuevo alumno
-
-try {
-
-    if (alumnoEditandoLegajo === null) { // si viene nulo es un documento nuevo
-        const alumno = {
-            legajo: Number(legajo),
-            nombre: nombre,
-            carrera: carrera,
-            correo: correo
-        }
-        const respuesta = await fetch(API_ALUMNOS, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(alumno)
-        })
-
-        if(!respuesta.ok){ //respuesta no ok status 200 a 299
-            throw new Error("La API respondió con un error.")
-        }
-        
-        
-        
-        
-        mostrarMensaje("Alumno guardado correctamente", "mje-exito")
-    } else { // hacemos PUT
-        const datosActuales = {
-            nombre: nombre,
-            carrera: carrera,
-            correo: correo
-        }
-        
-        if (JSON.stringify(datosActuales) === JSON.stringify(alumnoEditar)){
-            mostrarMensaje("No se realizaron cambios", "mje-adv")
-            return
-        }
-        
-        const respuesta = await fetch(`${API_ALUMNOS}/${alumnoEditandoLegajo}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application"
-            },
-            body: JSON.stringify({
+    try {
+        if (alumnoEditandoLegajo === null) { 
+            const alumno = {
+                legajo: Number(legajo),
                 nombre: nombre,
                 carrera: carrera,
-                correo:correo
+                correo: correo
+            }
+            const respuesta = await fetch(API_ALUMNOS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(alumno)
             })
-        }) 
-        if(!respuesta.ok) {
-            throw new Eror("La API respondió con un error.")
-        }
-        alumnoEditandoLegajo = null
-        alumnoEditar = null
-        btnGuardar.textContent = "Guardar Alumno"
-        document.querySelector("#legajo").disabled = false
-        
-        mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
-    }    
-    
-    // const alumnosActualizados = await obtenerAlumnos() //para q muestre la tabla con info nueva
-    // mostraAlumnos(alumnosActualizados)
-    await actualizarListaAlumnos()
-    formulario.reset()
-}
 
-catch (error) {
-    console.error(error.message)          //console error técnico
-    mostrarMensaje("No fue posible realizar la operación.", "mje-error")
-}
+            if(!respuesta.ok){ 
+                throw new Error("La API respondió con un error.")
+            }
+            
+            mostrarMensaje("Alumno guardado correctamente", "mje-exito")
+        } else { 
+            const datosActuales = {
+                nombre: nombre,
+                carrera: carrera,
+                correo: correo
+            }
+            
+            if (JSON.stringify(datosActuales) === JSON.stringify(alumnoEditar)){
+                mostrarMensaje("No se realizaron cambios", "mje-adv")
+                return
+            }
+            
+            const respuesta = await fetch(`${API_ALUMNOS}/${alumnoEditandoLegajo}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify(datosActuales) 
+            }) 
+            if(!respuesta.ok) {
+                throw new Error("La API respondió con un error.") 
+            }
+            alumnoEditandoLegajo = null
+            alumnoEditar = null
+            btnGuardar.textContent = "Guardar Alumno"
+            document.querySelector("#legajo").disabled = false
+            
+            mostrarMensaje("Alumno actualizado correctamente", "mje-exito")
+        }    
+        
+        await actualizarListaAlumnos()
+        formulario.reset()
+    }
+    catch (error) {
+        console.error(error.message)          
+        mostrarMensaje("No fue posible realizar la operación.", "mje-error")
+    }
 });
 
 async function obtenerAlumnos() {
@@ -272,11 +256,9 @@ async function obtenerAlumnos() {
         return alumnos
     } catch(error) {
         console.error(error.message)
-        throw error //para q el usuario sepa q hubo un problema
+        throw error 
     }
 }
-
-
 
 function mostraAlumnos(alumnos) {
     listaAlumnos.innerHTML = ""
@@ -305,8 +287,9 @@ function mostraAlumnos(alumnos) {
         `;
     }
 }
+
 async function eliminarAlumno(legajo) {
-    const respuesta = await fetch(`${API_ALUMNOS}/ ${legajo}`, {
+    const respuesta = await fetch(`${API_ALUMNOS}/${legajo}`, {
         method: "DELETE"
     })
 
@@ -330,7 +313,6 @@ async function eliminarAlumno(legajo) {
 
 async function actualizarListaAlumnos () {
     try{
-
         const alumnos = await obtenerAlumnos()
         mostraAlumnos(alumnos)
     } catch(error){
@@ -359,10 +341,10 @@ async function editarAlumno(legajo) {
     const alumno = alumnos.find(alumno => alumno.legajo === legajo)
     if (!alumno) {
         mostrarMensaje("Alumno no encontrado", "mje-error")
-        return // para que no deje continuar con la función
+        return 
     }
     document.querySelector("#legajo").value = alumno.legajo;
-    document.querySelector("#legajo").disabled = true // para deshabilitar para q no pueda hacer clic dentro 
+    document.querySelector("#legajo").disabled = true 
     document.querySelector("#nombre").value = alumno.nombre;
     document.querySelector("#carrera").value = alumno.carrera;
     document.querySelector("#correo").value = alumno.correo;
@@ -385,7 +367,7 @@ function cancelarEdicion(){
     alumnoEditandoLegajo = null
     alumnoEditar = null
     btnGuardar.textContent = "Guardar Alumno"
-    document.querySelector("#legajo").disabled = false // lo deja habilitado
+    document.querySelector("#legajo").disabled = false 
     btnCancelar.style.display = "none"
     document.querySelector("#legajo").focus()
 }

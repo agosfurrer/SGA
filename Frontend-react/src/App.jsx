@@ -1,38 +1,29 @@
-import FormularioA from './components/FormularioA'
-import {ListaAlumnos} from './components/ListaAlumnos'
-import { useState } from "react"
-import EjemploMUI from './components/ejemplos/EjemploMUI'
-import FAQ from './components/FAQ'
+
+//import EjemploMUI from './components/ejemplos/EjemploMUI'
+import { Alumnos } from './pages/Alumnos.jsx'
+import {FAQ} from './pages/FAQ.jsx'
+//import SelectorTema from './components/SelectorTema.jsx'
+import {Routes, Route} from "react-router-dom"
+import LayoutPrincipal from './layouts/LayoutPrincipal.jsx'
+import Inicio from './pages/Inicio.jsx'
 
 function App() {
-  const [actualizar,setActualizar] = useState(0) //es un contador
-  const {alumnoEditar, setAlumnoEditar} = useState(null)
-  function alumnoCreado() {
-  setActualizar(valor => valor + 1) //despues q el valor se actualizó hay q renderizar, para q el useeffect
-  // cambie y me muestre el estado con los datos 
-  setAlumnoEditar(null)
-}
+  
 
-function seleccionarAlumno(alumno) { //para guardar el objeto donde se seleccione el click
-  setAlumnoEditar(alumno)
-}
-  //"nuevo" no significa nada, cuando alumnoEditar = null va por POST la app
-  //si no, se hace una actualización PUT
-  return (
-    <>
-  <main>
-    <EjemploMUI />
-    <FormularioA key={alumnoEditar?.legajo ?? "nuevo"}
-    onAlumnoCreado={alumnoCreado}
-    alumnoEditar={alumnoEditar}
-    onCancelar={() => setAlumnoEditar(null)} /> {/*usuario hace clic en cancel y desaparece todo*/} 
-  <ListaAlumnos actualizar={actualizar} 
-  onAlumnoCreado={(alumnoCreado)}
-  onEditarAlumno={seleccionarAlumno}/> {/*use lista para actualizar interface*/ }
+return (
+  <>
+  <Routes>
+    <Route path='/' element={<LayoutPrincipal />}> 
+    <Route index elemet={<Inicio/>}></Route>
+    <Route path="alumnos" elements={<Alumnos/>}></Route>
+    <Route path="ayuda" element={<FAQ/>}></Route>
+    </Route> 
+  {/* <SelectorTema />
   <FAQ />
-  </main>
+  <Alumnos /> */}
+  </Routes>
+
   </>
 )
 }
-
 export default App
