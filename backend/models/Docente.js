@@ -1,25 +1,19 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose") 
 
-const docenteSchema = new mongoose.Schema({
-    legajo: {
+const docenteSchema = new mongoose.Schema({ 
+    dni: {
         type: Number,
-        required: true,
-        unique: true
+        unique: true 
     },
-    nombre: {
-        type: String,
-        required: true
-    },
-    especialidad: {
-        type: String,
-        required: true
-    },
-    correo: {
-        type: String,
-        required: true
-    }
-}, {
-    versionKey: false
-})
+    nombre: String,
+    especialidad: String,
+    correo: String
+},
+{ 
+    versionKey: false 
+}
+)
 
-module.exports = mongoose.model("Docente", docenteSchema)
+const Docente = mongoose.model("Docente", docenteSchema) 
+
+module.exports = Docente 

@@ -1,6 +1,7 @@
-import {createTheme} from "@mui/materials/styles"
+import {createTheme} from "@mui/material/styles" //importa la función createTheme de
+// MUI para crear un tema personalizado
 
-const tema = createTheme({
+const tema = createTheme({ //crea un tema personalizado con colores y estilos para la aplicación
     colorSchemes: {
         light: {
             palette: {
