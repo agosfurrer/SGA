@@ -8,21 +8,21 @@ react-router-dom para definir las rutas de la aplicación*/
 import LayoutPrincipal from './layouts/LayoutPrincipal.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Docentes from "./pages/Docentes"
+import Materias from "./pages/Materias.jsx"
 
 function App() { /*componente principal de la aplicación, maneja las rutas y el layout principal*/
 
 return (
-  <> /*agrupa los elementos sin agregar un nodo extra al DOM*/
+  <> 
 
-  <Routes> /*define las rutas de la aplicación, cada ruta tiene un path y un 
-    elemento que se renderiza cuando se accede a esa ruta*/
+  <Routes> 
  
-  <Route path='/' element={<LayoutPrincipal />}> /*ruta principal, renderiza el layout principal*/
-
-    <Route index element={<Inicio/>}></Route> /*ruta de inicio, renderiza la pantalla de inicio*/
-    <Route path="alumnos" element={<Alumnos/>}></Route> /*ruta de alumnos, renderiza la pantalla de alumnos*/
+  <Route path='/' element={<LayoutPrincipal />}> 
+    <Route index element={<Inicio/>}></Route> 
+    <Route path="alumnos" element={<Alumnos/>}></Route> 
     <Route path="docentes" element={<Docentes /> } />
-    <Route path="ayuda" element={<FAQ/>}></Route> /*ruta de ayuda, renderiza la pantalla de ayuda*/
+    <Route path="materias" element={<Materias />} />
+    <Route path="ayuda" element={<FAQ/>}></Route>
     </Route> 
   {/* <SelectorTema />
   <FAQ />

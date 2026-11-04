@@ -13,11 +13,10 @@ createRoot(document.getElementById('root')).render( /*renderiza el componente Ap
   ThemeProvider y BrowserRouter, para que la aplicación tenga acceso al tema y a las rutas*/
 
   <StrictMode>
-    <BrowserRouter > /*permite usar rutas y enlaces dentro de la aplicación*/
+    <BrowserRouter > 
     <ThemeProvider theme={tema} defaultMode='system'> 
-    <CssBaseline /> /*aplica estilos globales de MUI, como reseteo de margenes y paddings, y tipografía base*/
-    <App /> /*componente principal de la aplicación, maneja las rutas y el layout principal*/
-
+    <CssBaseline /> 
+    <App /> 
     </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,
