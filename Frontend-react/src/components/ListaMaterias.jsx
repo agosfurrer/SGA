@@ -1,58 +1,57 @@
 import { useEffect, useState } from "react"
-import { Alert, Box, Button, Chip, Paper, Stack, Typography } from "@mui/material"
-
+import Alert from "@mui/material/Alert"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Chip from "@mui/material/Chip"
+import Paper from "@mui/material/Paper"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 const API_MATERIAS = "http://localhost:3000/materias"
 
 export function ListaMaterias({ actualizar, onMateriaGuardada, onEditarMateria }) {
     const [materias, setMaterias] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
-    const [eliminandoCodigo, setEliminandoCodigo] = useState("")
 
     async function eliminarMateria(codigo) {
-        if (!window.confirm("¿Seguro que querés eliminar esta materia?")) {
+        const confirmar = window.confirm("¿Seguro que querés eliminar esta materia?")
+        if (!confirmar) {
             return
         }
-
-        setError("")
-        setEliminandoCodigo(codigo)
         try {
-            const respuesta = await fetch(`${API_MATERIAS}/${encodeURIComponent(codigo)}`, {
-                method: "DELETE"
-            })
-            const resultado = await respuesta.json().catch(() => ({}))
-
+            const respuesta = await fetch(`${API_MATERIAS}/${codigo}`, 
+                { method: "DELETE" }
+            )
             if (!respuesta.ok) {
-                setError(resultado.mensaje || "No se pudo eliminar la materia.")
-                return
+                throw new Error(`No se pudo eliminar. Estado HTTP: ${respuesta.status}`)
             }
-
             onMateriaGuardada()
-        } catch {
-            setError("No se pudo conectar con el servidor.")
-        } finally {
-            setEliminandoCodigo("")
+        } catch (error) {
+            console.error("Error al eliminar: ", error)
+            alert(error.message || "No se pudo eliminar materia")
         }
     }
-
     useEffect(() => {
         async function cargarMaterias() {
             setCargando(true)
             setError("")
+
             try {
                 const respuesta = await fetch(API_MATERIAS)
+
                 if (!respuesta.ok) {
-                    const resultado = await respuesta.json().catch(() => ({}))
-                    throw new Error(resultado.mensaje || "No se pudo cargar la lista de materias.")
+                    throw new Error("No se pudo obtener la lista", respuesta.status)
                 }
-                setMaterias(await respuesta.json())
-            } catch (errorCarga) {
-                setError(errorCarga.message || "No se pudo conectar con el servidor.")
+
+                const datos = await respuesta.json()
+                setMaterias(datos)
+            } catch (error) {
+                console.error("Error de conexión", error)
+                setError("No se pudo cargar la lista de materias.")
             } finally {
                 setCargando(false)
             }
         }
-
         cargarMaterias()
     }, [actualizar])
 
@@ -63,7 +62,9 @@ export function ListaMaterias({ actualizar, onMateriaGuardada, onEditarMateria }
             </Paper>
         )
     }
-
+    if (error) {
+        return <Alert severity="error" role="alert">{error}</Alert>
+    }
     return (
         <Paper
             component="section"
@@ -79,66 +80,74 @@ export function ListaMaterias({ actualizar, onMateriaGuardada, onEditarMateria }
             <Typography component="h2" variant="h5" sx={{ mb: 2.5, fontWeight: 700 }}>
                 Materias
             </Typography>
-            {error && <Alert severity="error" role="alert" sx={{ mb: 2 }}>{error}</Alert>}
-            {materias.length === 0 ? (
-                <Typography color="text.secondary">No hay materias registradas.</Typography>
-            ) : (
-                <Stack component="ul" spacing={1.5} sx={{ listStyle: "none", p: 0, m: 0 }}>
-                    {materias.map(materia => (
-                        <Paper
-                            component="li"
-                            key={materia.codigo}
-                            elevation={0}
-                            sx={{
-                                p: { xs: 2, sm: 2.5 },
-                                border: 1,
-                                borderColor: "divider",
-                                borderRadius: 3,
-                                display: "flex",
-                                alignItems: { xs: "stretch", sm: "center" },
-                                justifyContent: "space-between",
-                                flexDirection: { xs: "column", sm: "row" },
-                                gap: 2
-                            }}
-                        >
-                            <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-                                <Stack direction="row" spacing={1} sx={{ alignItems: "center", flexWrap: "wrap" }}>
-                                    <Chip label={materia.codigo} color="primary" variant="outlined" size="small" />
-                                    <Typography fontWeight={600}>{materia.nombre}</Typography>
-                                    <Chip
-                                        label={materia.estado === "activa" ? "Activa" : "Inactiva"}
-                                        color={materia.estado === "activa" ? "success" : "default"}
-                                        size="small"
-                                    />
-                                </Stack>
-                                {materia.descripcion && (
-                                    <Typography variant="body2" color="text.secondary" sx={{ overflowWrap: "anywhere" }}>
-                                        {materia.descripcion}
-                                    </Typography>
-                                )}
-                                <Typography variant="body2" color="text.secondary">
-                                    Carga horaria: {materia.cargaHoraria} horas
-                                </Typography>
-                            </Stack>
-                            <Box sx={{ display: "flex", flex: "0 0 auto", justifyContent: "flex-end", gap: 1 }}>
-                                <Button type="button" variant="outlined" size="small" onClick={() => onEditarMateria(materia)}>
-                                    Editar
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="outlined"
-                                    color="error"
-                                    size="small"
-                                    disabled={eliminandoCodigo === materia.codigo}
-                                    onClick={() => eliminarMateria(materia.codigo)}
+            {materias.length === 0
+                ? (
+                    <Typography color="text.secondary">
+                        No hay materias registradas.
+                    </Typography>
+                )
+                : (
+                    <Stack
+                        component="ul"
+                        spacing={1.5}
+                        sx={{ listStyle: "none", p: 0, m: 0 }}
+                    >
+                        {materias.map(materia => (
+                            <Paper
+                                component="li"
+                                key={materia.codigo}
+                                elevation={0}
+                                sx={{
+                                    p: { xs: 2, sm: 2.5 },
+                                    border: 1,
+                                    borderColor: "divider",
+                                    borderRadius: 3,
+                                    display: "flex",
+                                    alignItems: { xs: "stretch", sm: "center" },
+                                    justifyContent: "space-between",
+                                    flexDirection: { xs: "column", sm: "row" },
+                                    gap: 2
+                                }}
+                            >
+                                <Stack
+                                    direction="row"
+                                    spacing={1.5}
+                                    sx={{ alignItems: "center", flexWrap: "wrap" }}
                                 >
-                                    {eliminandoCodigo === materia.codigo ? "Eliminando..." : "Eliminar"}
-                                </Button>
-                            </Box>
-                        </Paper>
-                    ))}
-                </Stack>
-            )}
+                                    <Chip label={`Código ${materia.codigo}`} color="primary" variant="outlined" size="small" />
+                                    <Box>
+                                        <Typography fontWeight={600}>{materia.nombre}</Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {materia.descripcion}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Carga horaria: {materia.cargaHoraria} hs | Estado: {materia.estado}
+                                        </Typography>
+                                    </Box>
+                                </Stack>
+                                <Stack direction="row" spacing={1} sx={{ justifyContent: "flex-end" }}>
+                                    <Button
+                                        type="button"
+                                        onClick={() => onEditarMateria(materia)}
+                                        variant="outlined"
+                                        size="small"
+                                    >
+                                        Editar
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        onClick={() => eliminarMateria(materia.codigo)}
+                                        variant="outlined"
+                                        color="error"
+                                        size="small"
+                                    >
+                                        Eliminar
+                                    </Button>
+                                </Stack>
+                            </Paper>
+                        ))}
+                    </Stack>
+                )}
         </Paper>
     )
 }

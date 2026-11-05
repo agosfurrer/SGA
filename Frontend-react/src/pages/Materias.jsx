@@ -1,33 +1,32 @@
-import { useState } from "react"
-import Box from "@mui/material/Box"
-import FormularioMateria from "../components/FormularioMateria"
-import { ListaMaterias } from "../components/ListaMaterias"
+import FormularioMateria from '../components/FormularioM'
+import { ListaMaterias } from '../components/ListaMaterias'
+import { useState } from "react" 
 
-export default function Materias() {
-    const [actualizar, setActualizar] = useState(0)
-    const [materiaEditar, setMateriaEditar] = useState(null)
+export function Materias(){ 
 
-    function materiaGuardada() {
-        setActualizar(valor => valor + 1)
-        setMateriaEditar(null)
-    }
+const [actualizar, setActualizar] = useState(0) 
+const [materiaEditar, setMateriaEditar] = useState(null) 
 
-    function seleccionarMateria(materia) {
-        setMateriaEditar(materia)
-    }
+function materiaGuardada() { 
+setActualizar(valor => valor + 1)
+setMateriaEditar(null) }
 
-    return (
-        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(300px, 0.85fr) minmax(0, 1.15fr)" }, gap: 3, alignItems: "start" }}>
-            <FormularioMateria
-                materiaEditar={materiaEditar}
-                onMateriaGuardada={materiaGuardada}
-                onCancelar={() => setMateriaEditar(null)}
-            />
-            <ListaMaterias
-                actualizar={actualizar}
-                onMateriaGuardada={materiaGuardada}
-                onEditarMateria={seleccionarMateria}
-            />
-        </Box>
-    )
+function seleccionarMateria(materia) { 
+setMateriaEditar(materia) }
+return (
+ <>
+<main>
+
+ <FormularioMateria key={materiaEditar?.codigo ?? "nuevo"} 
+ onMateriaGuardada={materiaGuardada} 
+ materiaEditar={materiaEditar} 
+ onCancelar={() => setMateriaEditar(null)} /> 
+ <ListaMaterias actualizar={actualizar} 
+ onMateriaGuardada={materiaGuardada} 
+ onEditarMateria={seleccionarMateria}/> 
+
+</main>
+ </>
+)
 }
+export default Materias

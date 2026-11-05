@@ -9,12 +9,14 @@ import LayoutPrincipal from './layouts/LayoutPrincipal.jsx'
 import Inicio from './pages/Inicio.jsx'
 import Docentes from "./pages/Docentes"
 import Materias from "./pages/Materias.jsx"
+import Login from "./pages/Login"
 
 function App() { /*componente principal de la aplicación, maneja las rutas y el layout principal*/
 
 return (
   <> 
 
+<Login />
   <Routes> 
  
   <Route path='/' element={<LayoutPrincipal />}> 
